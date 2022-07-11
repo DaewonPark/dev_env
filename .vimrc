@@ -62,6 +62,7 @@ let g:webdevicons_conceal_nerdtree_brackets = 1
 
 
 " vim-airline
+Plugin 'motemen/git-vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1 " turn on buffer list
@@ -81,7 +82,17 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Clean'     :'✔︎',
                 \ 'Unknown'   :'?',
                 \ }
+" Removes trailing spaces
+function TrimWhiteSpace()
+  %s/\s*$//
+  ''
+endfunction
 
+set list listchars=trail:.,extends:>
+autocmd FileWritePre * call TrimWhiteSpace()
+autocmd FileAppendPre * call TrimWhiteSpace()
+autocmd FilterWritePre * call TrimWhiteSpace()
+autocmd BufWritePre * call TrimWhiteSpace()
 
 " Themes
 Plugin 'joshdick/onedark.vim'
@@ -94,6 +105,9 @@ let g:lightline = {
 " Syntax
 syntax on
 Plugin 'sheerun/vim-polyglot'
+Plugin 'kergoth/vim-bitbake'
+au BufNewFile,BufReadPost *.bb source ~/.vim/bundle/vim-bitbake/syntax/bitbake.vim
+
 
 " Configurations
 set encoding=UTF-8
@@ -111,3 +125,8 @@ noremap <F4> :NERDTreeToggle<CR>
 " map <C-@> to toggle
 tnoremap <silent> <C-@> <C-w>:ToggleTerminal<CR>
 nnoremap <silent> <C-@> :ToggleTerminal<CR>
+nnoremap <C-S-H> :bprevious<CR>
+nnoremap <C-S-L> :bnext<CR>
+
+map <F2> :call TrimWhiteSpace()<CR>
+map! <F2> :call TrimWhiteSpace()<CR>
